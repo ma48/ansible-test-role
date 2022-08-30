@@ -1,0 +1,17 @@
+---
+- block:
+    - name: Install httpd
+      ansible.builtin.dnf:
+        name:
+          - httpd
+        state: present
+        lock_timeout: 30
+
+    - name: Enabled systemd httpd.service
+      ansible.builtin.systemd:
+        name: httpd.service
+        state: restarted
+        daemon_reload: yes
+        enabled: yes
+      become: yes
+  tags: httpd-base
