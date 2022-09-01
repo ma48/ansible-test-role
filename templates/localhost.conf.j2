@@ -1,0 +1,22 @@
+<VirtualHost _default_:80>
+    DocumentRoot /www/localhost/htdocs
+    ServerName localhost
+
+    ErrorLog  logs/error_localhost_log
+    CustomLog logs/access_localhost_log   combined env=!healthcheck
+    CustomLog logs/access_healthcheck_log combined env=healthcheck
+
+    <Directory /www/localhost/htdocs>
+        AllowOverride All
+        Options FollowSymLinks
+        Require env imj healthcheck private
+    </Directory>
+
+    <Location /server-status>
+        SetHandler server-status
+    </Location>
+
+{% if use_tomcat_healthcheck == "1" %}
+    ProxyPass {{ HEALTHCHECK_URL }}
+{% endif %}
+</VirtualHost>

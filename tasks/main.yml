@@ -14,4 +14,30 @@
         daemon_reload: yes
         enabled: yes
       become: yes
+
+    - name: Set localhost.conf
+      ansible.builtin.template:
+        src: localhost.conf.j2
+        dest: /etc/httpd/conf.d/localhost.conf
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Create htdocs directory
+      ansible.builtin.file:
+        path: /www/localhost/htdocs
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Set index.html for localhost
+      ansible.builtin.template:
+        src: index.html.j2
+        dest: /www/localhost/htdocs/index.html
+        owner: root
+        group: root
+        mode: 0644
+      with_items:
+        - { name: localhost }
   tags: httpd-base
