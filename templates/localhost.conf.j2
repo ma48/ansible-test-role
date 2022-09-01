@@ -15,8 +15,4 @@
     <Location /server-status>
         SetHandler server-status
     </Location>
-
-{% if use_tomcat_healthcheck == "1" %}
-    ProxyPass {{ HEALTHCHECK_URL }}
-{% endif %}
 </VirtualHost>
